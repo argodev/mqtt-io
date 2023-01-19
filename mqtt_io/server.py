@@ -511,7 +511,7 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
                     "Digital output '%s' current value is %s (raw: %s)",
                     out_conf["name"],
                     value,
-                    raw_value
+                    raw_value,
                 )
                 self.event_bus.fire(DigitalOutputChangedEvent(out_conf["name"], value))
 
@@ -1078,6 +1078,8 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
             finished_tasks = [x for x in self.transient_tasks if x.done()]
             if not finished_tasks:
                 continue
+            for task in finished_tasks:
+                self.transient_tasks.remove(task)
             results = await asyncio.gather(*finished_tasks, return_exceptions=True)
             for i, exception in [
                 x for x in enumerate(results) if isinstance(x[1], Exception)
@@ -1087,8 +1089,6 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
                     raise exception
                 except Exception:  # pylint: disable=broad-except
                     _LOG.exception("Exception in task: %r:", task)
-                finally:
-                    self.transient_tasks.remove(task)
 
     async def digital_output_loop(
         self, module: GenericGPIO, queue: "asyncio.Queue[Tuple[ConfigType, str]]"
