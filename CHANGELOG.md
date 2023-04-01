@@ -2,6 +2,13 @@ Unreleased
 ==========
 - Nothing!
 
+v2.2.8 - 2023-02-04
+====================
+- Bump the dependency level for typing-extensions to ^4.0.0
+- added .gitignore for /.venv/
+
+
+
 .v2.2.7 - 2022-07-07
 ====================
 - Fix some minor pylint issues and silence some others.

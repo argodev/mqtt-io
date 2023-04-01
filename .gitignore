@@ -4,6 +4,7 @@ poetry.lock
 .vscode
 .ignore
 .idea
+.venv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
